@@ -1,7 +1,9 @@
 package spring5mvc.rest.api.v1.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.data.web.JsonPath;
 
 import java.util.List;
 
@@ -11,5 +13,6 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class CategoryListDTO {
+    @JsonProperty("categories")
     List<CategoryDTO> categoryDTOList;
 }

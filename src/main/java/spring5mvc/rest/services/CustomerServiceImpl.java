@@ -3,6 +3,8 @@ package spring5mvc.rest.services;
 import org.springframework.stereotype.Service;
 import spring5mvc.rest.api.v1.mapper.CustomerMapper;
 import spring5mvc.rest.api.v1.model.CustomerDTO;
+import spring5mvc.rest.controllers.v1.CustomerController;
+import spring5mvc.rest.domain.Customer;
 import spring5mvc.rest.repositories.CustomerRepository;
 
 import java.util.List;
@@ -30,7 +32,7 @@ public class CustomerServiceImpl implements CustomerService {
                                  .map(
                                          customer -> {
                                              CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customer);
-                                             customerDTO.setCustomerUrl("/api/v1/customer/" + customer.getId());
+                                             customerDTO.setCustomerUrl(getCustomerUrl(customer.getId()));
                                              return customerDTO;
                                          })
                                  .collect(Collectors.toList());
@@ -41,5 +43,28 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.findById(id)
                                  .map(customerMapper::customerToCustomerDTO)
                                  .orElseThrow(RuntimeException::new);
+    }
+
+    @Override
+    public CustomerDTO createNewCustomer(CustomerDTO customerDTO) {
+        return saveAndReturnDTO(customerMapper.customerDtoToCustomer(customerDTO));
+    }
+
+    private CustomerDTO saveAndReturnDTO(Customer customer) {
+        Customer savedCustomer = customerRepository.save(customer);
+        CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(savedCustomer);
+        customerDTO.setCustomerUrl(getCustomerUrl(savedCustomer.getId()));
+        return customerDTO;
+    }
+
+    @Override
+    public CustomerDTO saveCustomerByDTO(Long id, CustomerDTO customerDTO) {
+        Customer customer = customerMapper.customerDtoToCustomer(customerDTO);
+        customer.setId(id);
+        return saveAndReturnDTO(customer);
+    }
+
+    private String getCustomerUrl(Long id) {
+        return CustomerController.BASE_URL +"/"+ id;
     }
 }
