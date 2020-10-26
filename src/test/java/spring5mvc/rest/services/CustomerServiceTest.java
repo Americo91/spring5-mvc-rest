@@ -87,4 +87,25 @@ class CustomerServiceTest {
         verify(customerRepository, times(1)).findById(anyLong());
     }
 
+    @Test
+    void patchCustomer() {
+        Customer customer = Customer.builder().id(ID).firstName(NAME).build();
+
+        String updateName = "Tommy";
+
+        when(customerRepository.findById(anyLong())).thenReturn(Optional.of(customer));
+
+        CustomerDTO dto = CustomerDTO.builder().id(ID).firstName(updateName).build();
+
+        CustomerDTO updatedCustomerDTO = customerService.patchCustomer(ID, dto);
+        assertNotNull(updatedCustomerDTO);
+        assertEquals(ID, updatedCustomerDTO.getId());
+        assertNotEquals(NAME, updatedCustomerDTO.getFirstName());
+    }
+
+    @Test
+    void deleteCustomer() {
+        customerRepository.deleteById(ID);
+        verify(customerRepository, times(1)).deleteById(anyLong());
+    }
 }

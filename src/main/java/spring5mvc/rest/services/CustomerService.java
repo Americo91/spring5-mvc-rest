@@ -1,6 +1,5 @@
 package spring5mvc.rest.services;
 
-import org.springframework.stereotype.Service;
 import spring5mvc.rest.api.v1.model.CustomerDTO;
 
 import java.util.List;
@@ -17,4 +16,8 @@ public interface CustomerService {
     CustomerDTO createNewCustomer(CustomerDTO customerDTO);
 
     CustomerDTO saveCustomerByDTO(Long id, CustomerDTO customerDTO);
+
+    CustomerDTO patchCustomer(Long id, CustomerDTO customerDTO);
+
+    void deleteCustomer(Long id);
 }
