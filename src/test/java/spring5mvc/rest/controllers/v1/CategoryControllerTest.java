@@ -36,6 +36,7 @@ class CategoryControllerTest {
     void setUp() {
         MockitoAnnotations.initMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(categoryController)
+                                 .setControllerAdvice(new RestResponseEntityExceptionHandler())
                                  .build();
     }
 

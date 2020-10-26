@@ -94,6 +94,7 @@ class CustomerServiceTest {
         String updateName = "Tommy";
 
         when(customerRepository.findById(anyLong())).thenReturn(Optional.of(customer));
+        when(customerRepository.save(any(Customer.class))).thenReturn(customer);
 
         CustomerDTO dto = CustomerDTO.builder().id(ID).firstName(updateName).build();
 
